@@ -4,6 +4,7 @@ import com.spradar.api.ScoreBoard;
 import com.spradar.domain.Match;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class InMemoryScoreBoard implements ScoreBoard {
@@ -24,7 +25,9 @@ public class InMemoryScoreBoard implements ScoreBoard {
 
     @Override
     public List<Match> getSummary() {
-        return new ArrayList<>(matches);
+        return matches.stream()
+                .sorted(Comparator.comparingInt(Match::getTotalScore).reversed())
+                .toList();
     }
 
     @Override

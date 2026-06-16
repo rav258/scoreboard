@@ -24,4 +24,7 @@ public class Match {
         this.awayScore = awayScore;
     }
 
+    public int getTotalScore() {
+        return homeScore + awayScore;
+    }
 }

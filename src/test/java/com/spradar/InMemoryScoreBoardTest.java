@@ -68,4 +68,24 @@ class InMemoryScoreBoardTest {
 
         assertTrue(scoreBoard.getSummary().isEmpty());
     }
+
+    @Test
+    void shouldReturnSummaryOrderedByTotalScoreDescending() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+        scoreBoard.updateScore("Mexico", "Canada", 0, 5);
+
+        scoreBoard.startGame("Spain", "Brazil");
+        scoreBoard.updateScore("Spain", "Brazil", 10, 2);
+
+        scoreBoard.startGame("Germany", "France");
+        scoreBoard.updateScore("Germany", "France", 2, 2);
+
+        List<Match> summary = scoreBoard.getSummary();
+
+        assertEquals("Spain", summary.get(0).getHomeTeam());
+        assertEquals("Mexico", summary.get(1).getHomeTeam());
+        assertEquals("Germany", summary.get(2).getHomeTeam());
+    }
 }
