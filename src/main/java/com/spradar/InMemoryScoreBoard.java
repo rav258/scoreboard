@@ -26,4 +26,18 @@ public class InMemoryScoreBoard implements ScoreBoard {
     public List<Match> getGames() {
         return new ArrayList<>(matches);
     }
+
+    @Override
+    public Match updateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
+        Match match = findMatch(homeTeam, awayTeam);
+        match.updateScore(homeScore, awayScore);
+        return match;
+    }
+
+    private Match findMatch(String homeTeam, String awayTeam) {
+        return matches.stream()
+                .filter(match -> match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam))
+                .findFirst()
+                .orElseThrow();
+    }
 }

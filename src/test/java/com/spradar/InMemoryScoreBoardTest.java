@@ -2,8 +2,10 @@ package com.spradar;
 
 import com.spradar.api.ScoreBoard;
 import com.spradar.domain.Match;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryScoreBoardTest {
 
@@ -13,10 +15,10 @@ class InMemoryScoreBoardTest {
 
         Match match = scoreBoard.startGame("Mexico", "Canada");
 
-        Assertions.assertEquals("Mexico", match.getHomeTeam());
-        Assertions.assertEquals("Canada", match.getAwayTeam());
-        Assertions.assertEquals(0, match.getHomeScore());
-        Assertions.assertEquals(0, match.getAwayScore());
+        assertEquals("Mexico", match.getHomeTeam());
+        assertEquals("Canada", match.getAwayTeam());
+        assertEquals(0, match.getHomeScore());
+        assertEquals(0, match.getAwayScore());
     }
 
     @Test
@@ -26,6 +28,18 @@ class InMemoryScoreBoardTest {
         scoreBoard.startGame("Mexico", "Canada");
         scoreBoard.finishGame("Mexico", "Canada");
 
-        Assertions.assertTrue(scoreBoard.getGames().isEmpty());
+        assertTrue(scoreBoard.getGames().isEmpty());
+    }
+
+    @Test
+    void shouldUpdateScore() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+
+        Match match = scoreBoard.updateScore("Mexico", "Canada", 0, 5);
+
+        assertEquals(0, match.getHomeScore());
+        assertEquals(5, match.getAwayScore());
     }
 }

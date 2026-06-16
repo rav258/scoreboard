@@ -11,4 +11,6 @@ public interface ScoreBoard {
     void finishGame(String homeTeam, String awayTeam);
 
     List<Match> getGames();
+
+    Match updateScore(String homeTeam, String awayTeam, int homeScore, int awayScore);
 }
