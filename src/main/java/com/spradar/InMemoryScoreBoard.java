@@ -10,10 +10,11 @@ import java.util.List;
 public class InMemoryScoreBoard implements ScoreBoard {
 
     private final List<Match> matches = new ArrayList<>();
+    private long sequence = 0;
 
     @Override
     public Match startGame(String homeTeam, String awayTeam) {
-        Match match = new Match(homeTeam, awayTeam);
+        Match match = new Match(homeTeam, awayTeam, ++sequence);
         matches.add(match);
         return match;
     }
@@ -26,7 +27,8 @@ public class InMemoryScoreBoard implements ScoreBoard {
     @Override
     public List<Match> getSummary() {
         return matches.stream()
-                .sorted(Comparator.comparingInt(Match::getTotalScore).reversed())
+                .sorted(Comparator.comparingInt(Match::getTotalScore).reversed()
+                        .thenComparing(Comparator.comparingLong(Match::getSequence).reversed()))
                 .toList();
     }
 

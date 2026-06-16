@@ -12,11 +12,15 @@ public class Match {
     private int homeScore;
     private int awayScore;
 
-    public Match(String homeTeam, String awayTeam) {
+    private final long sequence;
+
+    public Match(String homeTeam, String awayTeam, long sequence) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.homeScore = 0;
         this.awayScore = 0;
+
+        this.sequence = sequence;
     }
 
     public void updateScore(int homeScore, int awayScore) {

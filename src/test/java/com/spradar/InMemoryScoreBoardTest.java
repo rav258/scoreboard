@@ -88,4 +88,21 @@ class InMemoryScoreBoardTest {
         assertEquals("Mexico", summary.get(1).getHomeTeam());
         assertEquals("Germany", summary.get(2).getHomeTeam());
     }
+
+    @Test
+    void shouldOrderGamesWithSameTotalScoreByMostRecentlyStarted() {
+
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+        scoreBoard.updateScore("Mexico", "Canada", 1, 1);
+
+        scoreBoard.startGame("Spain", "Brazil");
+        scoreBoard.updateScore("Spain", "Brazil", 1, 1);
+
+        List<Match> summary = scoreBoard.getSummary();
+
+        assertEquals("Spain", summary.get(0).getHomeTeam());
+        assertEquals("Mexico", summary.get(1).getHomeTeam());
+    }
 }
