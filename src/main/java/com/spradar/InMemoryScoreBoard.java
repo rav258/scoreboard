@@ -18,6 +18,10 @@ public class InMemoryScoreBoard implements ScoreBoard {
     public Match startGame(String homeTeam, String awayTeam) {
         ValidationUtil.validateTeams(homeTeam, awayTeam);
 
+        if (gameExists(homeTeam, awayTeam)) {
+            throw new ScoreBoardException(String.format("Game %s vs %s already exists!", homeTeam, awayTeam));
+        }
+
         Match match = new Match(homeTeam, awayTeam, ++sequence);
         matches.add(match);
         return match;
@@ -50,5 +54,9 @@ public class InMemoryScoreBoard implements ScoreBoard {
                 .filter(match -> match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam))
                 .findFirst()
                 .orElseThrow(() -> new ScoreBoardException("Game not found!"));
+    }
+
+    private boolean gameExists(String homeTeam, String awayTeam) {
+        return matches.stream().anyMatch(match -> match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam));
     }
 }

@@ -144,4 +144,13 @@ class InMemoryScoreBoardTest {
 
         assertThrows(ScoreBoardException.class, () -> scoreBoard.updateScore("Mexico", "Canada", 1, 0));
     }
+
+    @Test
+    void shouldRejectDuplicateActiveGame() {
+        ScoreBoard board = new InMemoryScoreBoard();
+
+        board.startGame("Mexico", "Canada");
+
+        assertThrows(ScoreBoardException.class, () -> board.startGame("Mexico", "Canada"));
+    }
 }
