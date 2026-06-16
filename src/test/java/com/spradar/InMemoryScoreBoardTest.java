@@ -19,4 +19,13 @@ class InMemoryScoreBoardTest {
         Assertions.assertEquals(0, match.getAwayScore());
     }
 
+    @Test
+    void shouldFinishGame() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+        scoreBoard.finishGame("Mexico", "Canada");
+
+        Assertions.assertTrue(scoreBoard.getGames().isEmpty());
+    }
 }
