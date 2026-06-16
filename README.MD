@@ -128,3 +128,68 @@ mvn test
 ```
 
 ------------------------------------------------------------------------
+
+## Installation
+
+The library can be consumed as a Maven dependency via JitPack.
+
+[![](https://jitpack.io/v/rav258/scoreboard.svg)](https://jitpack.io/#rav258/scoreboard)
+
+### Add JitPack repository
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+### Add dependency
+
+```xml
+<dependency>
+    <groupId>com.github.rav258</groupId>
+    <artifactId>scoreboard</artifactId>
+    <version>v1.0.0</version>
+</dependency>
+```
+
+### Usage
+
+``` java
+ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+scoreBoard.startGame("Mexico", "Canada");
+scoreBoard.updateScore("Mexico", "Canada", 0, 5);
+
+scoreBoard.startGame("Spain", "Brazil");
+scoreBoard.updateScore("Spain", "Brazil", 10, 2);
+
+List<Match> summary = scoreBoard.getSummary();
+
+summary.forEach(System.out::println);
+```
+
+---
+
+## CI/CD
+
+The project is automatically built and tested using GitHub Actions.
+
+---
+
+## Development Approach
+
+The solution was developed incrementally using a test-first approach.
+
+Features were implemented one by one together with their corresponding tests, followed by small refactorings when needed. The implementation intentionally starts simple and evolves only when new requirements justified additional complexity.
+
+Examples of refactorings performed during development include:
+
+- Introducing sequence tracking to support ordering of games with equal scores.
+- Replacing `List`-based storage with `HashMap<GameKey, Match>` to simplify lookups and improve performance.
+- Improving validation and exception messages.
+
+The focus was to keep the solution simple while following TDD, Clean Code and SOLID principles.
