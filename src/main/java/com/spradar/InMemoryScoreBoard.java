@@ -23,7 +23,7 @@ public class InMemoryScoreBoard implements ScoreBoard {
     }
 
     @Override
-    public List<Match> getGames() {
+    public List<Match> getSummary() {
         return new ArrayList<>(matches);
     }
 

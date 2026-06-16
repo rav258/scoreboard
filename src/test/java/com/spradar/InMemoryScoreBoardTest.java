@@ -4,6 +4,8 @@ import com.spradar.api.ScoreBoard;
 import com.spradar.domain.Match;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,7 +30,7 @@ class InMemoryScoreBoardTest {
         scoreBoard.startGame("Mexico", "Canada");
         scoreBoard.finishGame("Mexico", "Canada");
 
-        assertTrue(scoreBoard.getGames().isEmpty());
+        assertTrue(scoreBoard.getSummary().isEmpty());
     }
 
     @Test
@@ -41,5 +43,29 @@ class InMemoryScoreBoardTest {
 
         assertEquals(0, match.getHomeScore());
         assertEquals(5, match.getAwayScore());
+    }
+
+    @Test
+    void shouldReturnCurrentGames() {
+
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+        scoreBoard.startGame("Spain", "Brazil");
+
+        List<Match> summary = scoreBoard.getSummary();
+
+        assertEquals(2, summary.size());
+    }
+
+    @Test
+    void shouldRemoveFinishedGameFromSummary() {
+
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+        scoreBoard.finishGame("Mexico", "Canada");
+
+        assertTrue(scoreBoard.getSummary().isEmpty());
     }
 }
