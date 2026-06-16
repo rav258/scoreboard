@@ -2,6 +2,8 @@ package com.spradar;
 
 import com.spradar.api.ScoreBoard;
 import com.spradar.domain.Match;
+import com.spradar.exception.ScoreBoardException;
+import com.spradar.util.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,6 +16,8 @@ public class InMemoryScoreBoard implements ScoreBoard {
 
     @Override
     public Match startGame(String homeTeam, String awayTeam) {
+        ValidationUtil.validateTeams(homeTeam, awayTeam);
+
         Match match = new Match(homeTeam, awayTeam, ++sequence);
         matches.add(match);
         return match;
@@ -34,6 +38,8 @@ public class InMemoryScoreBoard implements ScoreBoard {
 
     @Override
     public Match updateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
+        ValidationUtil.validateScore(homeScore, awayScore);
+
         Match match = findMatch(homeTeam, awayTeam);
         match.updateScore(homeScore, awayScore);
         return match;
@@ -43,6 +49,6 @@ public class InMemoryScoreBoard implements ScoreBoard {
         return matches.stream()
                 .filter(match -> match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new ScoreBoardException("Game not found!"));
     }
 }

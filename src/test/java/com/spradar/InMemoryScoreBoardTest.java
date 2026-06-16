@@ -2,11 +2,13 @@ package com.spradar;
 
 import com.spradar.api.ScoreBoard;
 import com.spradar.domain.Match;
+import com.spradar.exception.ScoreBoardException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryScoreBoardTest {
@@ -104,5 +106,42 @@ class InMemoryScoreBoardTest {
 
         assertEquals("Spain", summary.get(0).getHomeTeam());
         assertEquals("Mexico", summary.get(1).getHomeTeam());
+    }
+
+    @Test
+    void shouldRejectBlankHomeTeam() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        assertThrows(ScoreBoardException.class, () -> scoreBoard.startGame(" ", "Canada"));
+    }
+
+    @Test
+    void shouldRejectBlankAwayTeam() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        assertThrows(ScoreBoardException.class, () -> scoreBoard.startGame("Mexico", " "));
+    }
+
+    @Test
+    void shouldRejectSameTeams() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        assertThrows(ScoreBoardException.class, () -> scoreBoard.startGame("Mexico", "Mexico"));
+    }
+
+    @Test
+    void shouldRejectNegativeScores() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        scoreBoard.startGame("Mexico", "Canada");
+
+        assertThrows(ScoreBoardException.class, () -> scoreBoard.updateScore("Mexico", "Canada", -1, 0));
+    }
+
+    @Test
+    void shouldRejectUpdatingUnknownGame() {
+        ScoreBoard scoreBoard = new InMemoryScoreBoard();
+
+        assertThrows(ScoreBoardException.class, () -> scoreBoard.updateScore("Mexico", "Canada", 1, 0));
     }
 }
